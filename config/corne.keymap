@@ -47,6 +47,17 @@
             hold-trigger-key-positions = <KEYS_L THUMBS>;
             hold-trigger-on-release;
         };
+
+        sh: sticky_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "SH";
+            bindings = <&mo>, <&sl>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <300>;
+            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+        };
     };
 
     combos {
@@ -87,56 +98,81 @@
             key-positions = <20 19>;
             layers = <0>;
         };
+
+        esc {
+            bindings = <&kp ESCAPE>;
+            key-positions = <1 2>;
+            layers = <0>;
+        };
+
+        quotes {
+            bindings = <&kp SINGLE_QUOTE>;
+            key-positions = <22 21>;
+            layers = <0>;
+        };
+
+        enter {
+            bindings = <&kp ENTER>;
+            key-positions = <19 20 21>;
+            layers = <0>;
+        };
+
+        lower {
+            bindings = <&mo 1>;
+            key-positions = <32 33 31>;
+            layers = <0>;
+        };
+
+        shift {
+            bindings = <&kp LEFT_SHIFT>;
+            key-positions = <14 15 16>;
+            layers = <0>;
+        };
+
+        alt {
+            bindings = <&kp LALT>;
+            key-positions = <28 27 26>;
+            layers = <0>;
+        };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
-            // -----------------------------------------------------------------------------------------
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
-            // | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
-            // | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
-            //                     | GUI | LWR | SPC |   | ENT | RSE  | ALT |
-
-            display-name = "Base";
+        base {
             bindings = <
-&kp TAB           &kp Q  &kp W  &kp E     &kp R        &kp T            &kp Y      &kp U  &kp I      &kp O    &kp P     &kp BSPC
-&kp LEFT_SHIFT    &kp A  &kp S  &kp D     &kp F        &kp G            &kp H      &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
-&kp LEFT_CONTROL  &kp Z  &kp X  &kp C     &kp V        &kp B            &kp N      &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp ESC
-                                &kp LGUI  &lt 1 ENTER  &kp BACKSPACE    &kp SPACE  &mo 2  &kp RALT
+&trans  &kp Q  &kp W         &kp E     &kp R        &kp T            &kp Y      &kp U           &kp I      &kp O    &kp P     &trans
+&trans  &kp A  &hml LCTRL S  &kp D     &kp F        &kp G            &kp H      &kp J           &kp K      &kp L    &kp SEMI  &trans
+&trans  &kp Z  &kp X         &kp C     &kp V        &kp B            &kp N      &kp M           &kp COMMA  &kp DOT  &kp FSLH  &trans
+                             &kp LGUI  &lt 1 ENTER  &kp BACKSPACE    &kp SPACE  &kp LEFT_SHIFT  &sh 0 2
             >;
         };
 
-        lower_layer {
-            // -----------------------------------------------------------------------------------------
-            // |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
-            // | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-            // | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-            //                     | GUI |     | SPC |   | ENT |     | ALT |
-
-            display-name = "Lower";
+        lower {
             bindings = <
-&trans  &kp N1        &kp N2        &kp N3        &kp N4        &kp N5        &kp N6     &kp N7    &kp N8     &kp N9  &kp N0  &kp DEL
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_CLR    &trans     &kp UP    &trans     &trans  &trans  &trans
-&trans  &trans        &trans        &trans        &trans        &trans        &kp LEFT   &kp DOWN  &kp RIGHT  &trans  &trans  &trans
-                                    &trans        &trans        &kp RET       &kp SPACE  &trans    &trans
+&trans  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5    &kp N6   &kp N7    &kp N8    &kp N9     &kp N0  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans   &trans    &kp UP    &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans   &kp LEFT  &kp DOWN  &kp RIGHT  &trans  &trans
+                        &trans  &trans  &trans    &kp DEL  &trans    &trans
             >;
         };
 
-        raise_layer {
-            // -----------------------------------------------------------------------------------------
-            // |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  * |  (  |  )  | BKSP |
-            // | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-            // | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-            //                     | GUI |     | SPC |   | ENT |     | ALT |
-
+        upper {
             display-name = "Raise";
             bindings = <
-&trans  &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTERISK  &kp LPAR  &kp RPAR  &trans
-&trans  &trans    &trans  &trans    &trans    &trans       &kp MINUS  &kp EQUAL  &kp LBKT      &kp RBKT  &kp BSLH  &kp GRAVE
-&trans  &trans    &trans  &trans    &trans    &trans       &kp UNDER  &kp PLUS   &kp LBRC      &kp RBRC  &kp PIPE  &kp TILDE
-                          &trans    &trans    &kp RET      &kp SPACE  &trans     &trans
+&trans  &kp EXCL      &kp AT        &kp HASH      &kp DLLR      &kp PRCNT     &kp CARET  &kp AMPS   &kp ASTERISK  &trans     &trans  &trans
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_CLR    &kp MINUS  &kp EQUAL  &kp BSLH      &kp GRAVE  &trans  &trans
+&trans  &trans        &trans        &trans        &trans        &trans        &kp UNDER  &kp PLUS   &kp PIPE      &kp TILDE  &trans  &trans
+                                    &trans        &trans        &trans        &trans     &trans     &trans
+            >;
+        };
+
+        fn-nav {
+            bindings = <
+&trans  &kp F1   &kp F2   &kp F3  &kp F4  &kp F5         &kp F6       &kp F7    &kp F8    &kp F9     &kp F10  &trans
+&trans  &kp F11  &kp F12  &trans  &trans  &bootloader    &bootloader  &trans    &kp UP    &trans     &trans   &trans
+&trans  &trans   &trans   &trans  &trans  &trans         &trans       &kp LEFT  &kp DOWN  &kp RIGHT  &trans   &trans
+                          &trans  &trans  &trans         &trans       &trans    &trans
             >;
         };
     };
